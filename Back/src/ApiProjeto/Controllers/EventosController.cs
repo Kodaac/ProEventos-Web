@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using ApiProjeto.Persistence;
-using ApiProjeto.Domain;
 using Microsoft.AspNetCore.Mvc;
 using SQLitePCL;
 using ApiProjeto.Persistence.Contexto;
 using ApiProjeto.Application.Contratos;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using ApiProjeto.Application.DTOs;
 
 namespace ApiProjeto.Controllers
 {
@@ -28,7 +28,7 @@ namespace ApiProjeto.Controllers
            try
            {
                 var eventos = await _eventoService.GetAllEventosAsync(true);
-                if(eventos == null) return NotFound("Nenhum evento encontrado");
+                if(eventos == null) return NoContent();
 
                 return Ok(eventos);
            }
@@ -44,7 +44,7 @@ namespace ApiProjeto.Controllers
             try
             {
                     var evento = await _eventoService.GetEventoByIdAsync(id);
-                    if(evento == null) return NotFound("Nenhum evento encontrado.");
+                    if(evento == null) return NoContent();
 
                     return Ok(evento);
             }
@@ -60,7 +60,7 @@ namespace ApiProjeto.Controllers
             try
             {
                 var eventos = await _eventoService.GetAllEventosByTemaAsync(tema, true);
-                if(eventos == null) return NotFound("Evento por tema não encontrado.");
+                if(eventos == null) return NoContent();
 
                 return Ok(eventos);
             }
@@ -71,7 +71,7 @@ namespace ApiProjeto.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Post(Evento model)
+        public async Task<IActionResult> Post(EventoDTO model)
         {
             try
             {
@@ -87,7 +87,7 @@ namespace ApiProjeto.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Put(int id, Evento model)
+        public async Task<IActionResult> Put(int id, EventoDTO model)
         {
             try
             {
