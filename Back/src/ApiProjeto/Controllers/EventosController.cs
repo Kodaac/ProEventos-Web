@@ -109,7 +109,7 @@ namespace ApiProjeto.Controllers
             {
                 if(await _eventoService.DeleteEvento(id))
                 {
-                    return Ok("Evento deletado");
+                    return Ok(new {message = "Deletado"});
                 } 
                 else 
                 {
