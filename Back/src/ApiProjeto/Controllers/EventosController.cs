@@ -17,6 +17,7 @@ namespace ApiProjeto.Controllers
     public class EventosController : ControllerBase
     {
         private readonly IEventoService _eventoService;
+        
         public EventosController(IEventoService eventoService)
         {
             _eventoService = eventoService;
