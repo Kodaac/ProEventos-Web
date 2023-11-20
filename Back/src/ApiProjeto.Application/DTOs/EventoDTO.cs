@@ -30,6 +30,9 @@ namespace ApiProjeto.Application.DTOs
         [EmailAddress(ErrorMessage = "O campo {0} precisa ser um e-mail válido.")]
         public string Email { get; set; }
 
+        public int UserId { get; set; }
+        public UserDTO UserDto { get; set; }
+
         public IEnumerable<LoteDTO> Lote { get; set; }
         public IEnumerable<RedeSocialDTO> RedesSociais { get; set; }
         public IEnumerable<PalestranteDTO> PalestrantesEventos { get; set; }

@@ -11,20 +11,25 @@ using Microsoft.AspNetCore.Http;
 using ApiProjeto.Application.DTOs;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using ApiProjeto.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ApiProjeto.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class EventosController : ControllerBase
     {
         private readonly IEventoService _eventoService;
         private readonly IWebHostEnvironment _hostEnvironment;
+        private readonly IAccountService _accountService;
         
-        public EventosController(IEventoService eventoService, IWebHostEnvironment hostEnvironment)
+        public EventosController(IEventoService eventoService, IWebHostEnvironment hostEnvironment, IAccountService accountService)
         {
             _eventoService = eventoService;
             _hostEnvironment = hostEnvironment;
+            _accountService = accountService;
         }
 
         [HttpGet]
@@ -32,7 +37,7 @@ namespace ApiProjeto.Controllers
         {
            try
            {
-                var eventos = await _eventoService.GetAllEventosAsync(true);
+                var eventos = await _eventoService.GetAllEventosAsync(User.GetUserId(),true);
                 if(eventos == null) return NoContent();
 
                 return Ok(eventos);
@@ -48,7 +53,7 @@ namespace ApiProjeto.Controllers
         {
             try
             {
-                    var evento = await _eventoService.GetEventoByIdAsync(id);
+                    var evento = await _eventoService.GetEventoByIdAsync(User.GetUserId(), id, true);
                     if(evento == null) return NoContent();
 
                     return Ok(evento);
@@ -64,7 +69,7 @@ namespace ApiProjeto.Controllers
         {
             try
             {
-                var eventos = await _eventoService.GetAllEventosByTemaAsync(tema, true);
+                var eventos = await _eventoService.GetAllEventosByTemaAsync(User.GetUserId(),tema, true);
                 if(eventos == null) return NoContent();
 
                 return Ok(eventos);
@@ -80,7 +85,7 @@ namespace ApiProjeto.Controllers
         {
             try
             {
-                var evento = await _eventoService.GetEventoByIdAsync(eventoId, true);
+                var evento = await _eventoService.GetEventoByIdAsync(User.GetUserId(), eventoId, true);
                 if(evento == null) return NoContent();
             
                 var file = Request.Form.Files[0];
@@ -89,7 +94,7 @@ namespace ApiProjeto.Controllers
                     DeleteImage(evento.ImagemUrl);
                     evento.ImagemUrl = await SaveImage(file);
                 }
-                var eventoRetorno = await _eventoService.UpdateEvento(eventoId, evento);
+                var eventoRetorno = await _eventoService.UpdateEvento(User.GetUserId(), eventoId, evento);
 
                 return Ok(eventoRetorno);
             }
@@ -104,7 +109,7 @@ namespace ApiProjeto.Controllers
         {
             try
             {
-                var evento = await _eventoService.AddEvento(model);
+                var evento = await _eventoService.AddEvento(User.GetUserId(), model);
                 if(evento == null) return NoContent();
 
                 return Ok(evento);
@@ -120,7 +125,7 @@ namespace ApiProjeto.Controllers
         {
             try
             {
-                var evento = await _eventoService.UpdateEvento(id, model);
+                var evento = await _eventoService.UpdateEvento(User.GetUserId(), id, model);
                 if(evento == null) return BadRequest("Erro ao tentar atualizar evento.");
 
                 return Ok(evento);
@@ -136,10 +141,10 @@ namespace ApiProjeto.Controllers
         {
             try
             {
-                var evento = await _eventoService.GetEventoByIdAsync(id, true);
+                var evento = await _eventoService.GetEventoByIdAsync(User.GetUserId(), id, true);
                 if(evento == null) return NoContent();
 
-                if(await _eventoService.DeleteEvento(id))
+                if(await _eventoService.DeleteEvento(User.GetUserId(), id))
                 {
                     DeleteImage(evento.ImagemUrl);
                     return Ok(new {message = "Deletado"});
@@ -159,7 +164,7 @@ namespace ApiProjeto.Controllers
         [NonAction]
         public async Task<string> SaveImage(IFormFile imageFile)
         {
-            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');  //Pega a imagem, apenas os 10 primeiros digitos do nome e da um replace de espçao em branco por traço
+            string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');  //Pega a imagem, apenas os 10 primeiros digitos do nome e da um replace de espaço em branco por traço
             
             imageName = $"{imageName}{DateTime.UtcNow.ToString("yymmssfff")}{Path.GetExtension(imageFile.FileName)}";
             

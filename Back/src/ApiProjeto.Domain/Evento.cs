@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiProjeto.Domain.Identity;
 
 namespace ApiProjeto.Domain
 {
@@ -16,6 +17,8 @@ namespace ApiProjeto.Domain
         public string ImagemUrl { get; set; }
         public string Telefone { get; set; }
         public string Email { get; set; }
+        public int UserId { get; set; }
+        public User User { get; set; }
         public IEnumerable<Lote> Lote { get; set; }
         public IEnumerable<RedeSocial> RedesSociais { get; set; }
         public IEnumerable<PalestranteEvento> PalestrantesEventos { get; set; }

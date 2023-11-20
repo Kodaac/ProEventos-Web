@@ -8,12 +8,12 @@ namespace ApiProjeto.Application.Contratos
 {
     public interface IEventoService
     {
-        Task<EventoDTO> AddEvento(EventoDTO model);
-        Task<EventoDTO> UpdateEvento(int eventoId, EventoDTO model);
-        Task<bool> DeleteEvento(int eventoId);
+        Task<EventoDTO> AddEvento(int userId, EventoDTO model);
+        Task<EventoDTO> UpdateEvento(int userId, int eventoId, EventoDTO model);
+        Task<bool> DeleteEvento(int userId, int eventoId);
 
-        Task<EventoDTO[]> GetAllEventosAsync(bool includePalestrantes = false);
-        Task<EventoDTO[]> GetAllEventosByTemaAsync(string tema, bool includePalestrantes = false);
-        Task<EventoDTO> GetEventoByIdAsync(int eventoId, bool includePalestrantes = false);
+        Task<EventoDTO[]> GetAllEventosAsync(int userId, bool includePalestrantes = false);
+        Task<EventoDTO[]> GetAllEventosByTemaAsync(int userId, string tema, bool includePalestrantes = false);
+        Task<EventoDTO> GetEventoByIdAsync(int userId, int eventoId, bool includePalestrantes = false);
     }
 }
