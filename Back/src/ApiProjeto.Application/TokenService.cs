@@ -30,13 +30,13 @@ namespace ApiProjeto.Application
             _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["TokenKey"])); //GenerateRandomKey();
         }
 
-        private SymmetricSecurityKey GenerateRandomKey()
-        {
-            //Gere uma chave aleatória de 512 bits
-            var keyBytes = new byte[64];
-            new RNGCryptoServiceProvider().GetBytes(keyBytes);
-            return new SymmetricSecurityKey(keyBytes);
-        }
+        //private SymmetricSecurityKey GenerateRandomKey()
+        //{
+        //  //Gere uma chave aleatória de 512 bits
+        //  var keyBytes = new byte[64];
+        //  new RNGCryptoServiceProvider().GetBytes(keyBytes);
+        //  return new SymmetricSecurityKey(keyBytes);
+        //}
         
         public async Task<string> CreateToken(UserUpdateDTO userUpdateDto)
         {

@@ -51,7 +51,12 @@ namespace ApiProjeto.Controllers
 
               var user = await _accountService.CreateAccountAsync(userDto);
               
-              if(user != null) return Ok(user);
+              if(user != null) return Ok(new 
+                {
+                    userName = user.Username,
+                    PrimeiroNome = user.PrimeiroNome,
+                    token = _tokenService.CreateToken(user).Result
+                });
 
               return BadRequest("Usuário não cadastrado. Tente novamente mais tarde.");
             }
@@ -91,13 +96,20 @@ namespace ApiProjeto.Controllers
         {
             try
             {
+                if(userUpdate.Username != User.GetUserName()) return Unauthorized("Usuário inválido!");
+
                 var user = await _accountService.GetUserByUserNameAsync(User.GetUserName());
                 if(user == null) return Unauthorized("Usuário inválido!");
                 
                 var userReturn = await _accountService.UpdateAccount(userUpdate);
                 if(userReturn == null) return NoContent();
 
-                return Ok(userReturn);
+                return Ok(new 
+                {
+                    userName = userReturn.Username,
+                    PrimeiroNome = userReturn.PrimeiroNome,
+                    token = _tokenService.CreateToken(userReturn).Result
+                });
             }
             catch (Exception ex)
             {

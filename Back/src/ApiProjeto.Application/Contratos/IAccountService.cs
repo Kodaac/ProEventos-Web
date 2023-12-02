@@ -12,7 +12,7 @@ namespace ApiProjeto.Application.Contratos
         Task<bool> UserExist(string username);
         Task<UserUpdateDTO> GetUserByUserNameAsync(string username);
         Task<SignInResult> CheckUserPasswordAsync(UserUpdateDTO userUpdateDto, string password);
-        Task<UserDTO> CreateAccountAsync(UserDTO user);
+        Task<UserUpdateDTO> CreateAccountAsync(UserDTO user);
         Task<UserUpdateDTO> UpdateAccount(UserUpdateDTO userUpdateDto);
     }
 }

@@ -40,7 +40,7 @@ namespace ApiProjeto.Application
             }
         }
 
-        public async Task<UserDTO> CreateAccountAsync(UserDTO userDto)
+        public async Task<UserUpdateDTO> CreateAccountAsync(UserDTO userDto)
         {
             try
             {
@@ -50,7 +50,7 @@ namespace ApiProjeto.Application
 
                 if(result.Succeeded) 
                 {
-                    var userToReturn = _mapper.Map<UserDTO>(user);
+                    var userToReturn = _mapper.Map<UserUpdateDTO>(user);
                     return userToReturn;
                 }
 
@@ -87,10 +87,15 @@ namespace ApiProjeto.Application
                 var user = await _userPersist.GetUserByUserNameAsync(userUpdateDto.Username);
                 if(user == null) return null;
 
+                userUpdateDto.Id = user.Id;
+
                 _mapper.Map(userUpdateDto, user);
 
-                var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-                var result = await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+                if(userUpdateDto.Password != null) 
+                {
+                    var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+                    await _userManager.ResetPasswordAsync(user, token, userUpdateDto.Password);
+                }
 
                 _userPersist.Update<User>(user);
 
