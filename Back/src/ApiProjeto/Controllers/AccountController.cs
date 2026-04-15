@@ -35,9 +35,9 @@ namespace ApiProjeto.Controllers
                 var user = await _accountService.GetUserByUserNameAsync(userName);
                 return Ok(user);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar usuário. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao recuperar usuário.");
             }
         }
 
@@ -60,9 +60,9 @@ namespace ApiProjeto.Controllers
 
               return BadRequest("Usuário não cadastrado. Tente novamente mais tarde.");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar registrar usuário. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao registrar usuário.");
             }
         }
 
@@ -85,9 +85,9 @@ namespace ApiProjeto.Controllers
                     token = _tokenService.CreateToken(user).Result
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar realizar login. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao realizar login.");
             }
         }
 
@@ -111,9 +111,9 @@ namespace ApiProjeto.Controllers
                     token = _tokenService.CreateToken(userReturn).Result
                 });
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar atualizar usuário. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao atualizar usuário.");
             }
         }
         

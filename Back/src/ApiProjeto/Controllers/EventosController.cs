@@ -42,9 +42,9 @@ namespace ApiProjeto.Controllers
 
                 return Ok(eventos);
            }
-           catch (Exception ex)
+           catch (Exception)
            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao recuperar eventos.");
            }
         }
 
@@ -58,9 +58,9 @@ namespace ApiProjeto.Controllers
 
                     return Ok(evento);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                    return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+                    return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao recuperar eventos.");
             }
         }
 
@@ -74,9 +74,9 @@ namespace ApiProjeto.Controllers
 
                 return Ok(eventos);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar eventos. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao recuperar eventos.");
             }
         }
 
@@ -98,9 +98,9 @@ namespace ApiProjeto.Controllers
 
                 return Ok(eventoRetorno);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar adicionar evento. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao adicionar evento.");
             }
         }
 
@@ -114,9 +114,9 @@ namespace ApiProjeto.Controllers
 
                 return Ok(evento);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar adicionar evento. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao adicionar evento.");
             }
         }
 
@@ -130,9 +130,9 @@ namespace ApiProjeto.Controllers
 
                 return Ok(evento);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar atualizar evento. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao atualizar evento.");
             }
         }
 
@@ -155,9 +155,9 @@ namespace ApiProjeto.Controllers
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar deletar evento. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao deletar evento.");
             }
         }
 
