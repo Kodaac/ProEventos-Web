@@ -33,9 +33,9 @@ namespace ApiProjeto.Controllers
 
                 return Ok(lotes);
            }
-           catch (Exception ex)
+           catch (Exception)
            {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar recuperar lotes. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao recuperar lotes.");
            }
         }
 
@@ -49,9 +49,9 @@ namespace ApiProjeto.Controllers
                 
                 return Ok(lotes);  
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar salvar lotes. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao salvar lotes.");
             }
         }
 
@@ -66,9 +66,9 @@ namespace ApiProjeto.Controllers
                 return await _loteService.DeleteLote(lote.EventoId, lote.Id) ? Ok(new {message = "Lote deletado"}) : throw new Exception("Ocorreu um problema não específico ao tentar deletar lote.");
                 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                return this.StatusCode(StatusCodes.Status500InternalServerError, $"Erro ao tentar deletar lotes. Erro: {ex.Message}");
+                return this.StatusCode(StatusCodes.Status500InternalServerError, "Erro interno ao deletar lotes.");
             }
         }
     }

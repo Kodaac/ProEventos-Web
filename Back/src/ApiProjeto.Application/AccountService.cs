@@ -31,7 +31,7 @@ namespace ApiProjeto.Application
             {
                 var user = await _userManager.Users.SingleOrDefaultAsync(user => user.UserName == userUpdateDto.Username.ToLower());
 
-                return await _signInManager.CheckPasswordSignInAsync(user, password, false);
+                return await _signInManager.CheckPasswordSignInAsync(user, password, true);
             }
             catch (Exception e)
             {

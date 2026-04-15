@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ApiProjeto
 {
@@ -44,11 +45,15 @@ namespace ApiProjeto
             //#config identity core - inicio
             services.AddIdentityCore<User>(
                 options => {
-                    options.Password.RequireDigit = false;
-                    options.Password.RequireNonAlphanumeric = false;        //Em produção isso tudo deve ser true
-                    options.Password.RequireLowercase = false;
-                    options.Password.RequireUppercase = false;
-                    options.Password.RequiredLength = 4;
+                    options.Password.RequireDigit = true;
+                    options.Password.RequireNonAlphanumeric = true;
+                    options.Password.RequireLowercase = true;
+                    options.Password.RequireUppercase = true;
+                    options.Password.RequiredLength = 12;
+                    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+                    options.Lockout.MaxFailedAccessAttempts = 5;
+                    options.Lockout.AllowedForNewUsers = true;
+                    options.User.RequireUniqueEmail = true;
                 }
             )
             .AddRoles<Role>()
@@ -64,8 +69,12 @@ namespace ApiProjeto
                 options.TokenValidationParameters = new TokenValidationParameters{
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["TokenKey"])),
-                    ValidateIssuer = false,
-                    ValidateAudience = false
+                    ValidateIssuer = true,
+                    ValidIssuer = Configuration["Jwt:Issuer"],
+                    ValidateAudience = true,
+                    ValidAudience = Configuration["Jwt:Audience"],
+                    ValidateLifetime = true,
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
@@ -132,7 +141,17 @@ namespace ApiProjeto
             app.UseAuthentication();
             app.UseAuthorization();
 
-            app.UseCors(access => access.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin() );
+            var allowedOrigins = Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? Array.Empty<string>();
+
+            app.UseCors(access =>
+            {
+                access.AllowAnyHeader().AllowAnyMethod();
+
+                if (allowedOrigins.Any())
+                {
+                    access.WithOrigins(allowedOrigins);
+                }
+            });
 
             app.UseStaticFiles(new StaticFileOptions() {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
